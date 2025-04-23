@@ -1,30 +1,57 @@
 function setup() {
   createCanvas(400, 400);
 }
-let olhoX;
-let olhoY;
+
+let xJogador = [0, 0, 0, 0];
+let yJogador = [75, 150, 225, 300];
+let jogador = ["😵", "🚖", "🕺", "🚘"];
+let teclas = ["a", "s", "d", "f"];
+let quantidade = jogador.length;
 
 function draw() {
-  background("#0C0C0C");
-  fill("#F4BA03");
-  circle(200, 200, 300); // rosto
-  fill("#673AB7");
-  circle(150, 150, 60); // olho esquerdo
-  circle(250, 150, 60); // olho direito
-  line(245, 270, 150, 270); // boca
-  fill("#F80A0A");
-  triangle(200, 180, 170, 220, 220, 220); // nariz
-  line(227, 92, 275, 121); // sobrancelha esquerda
-  line(158, 101, 120, 119); // sobrancelha direita
-  // circle(150,150,10); // pupila esquerda
-  //circle(250,150,10); // pupila direita
+  ativaJogo();
+  desenhaJogadores();
+  desenhaLinhaDeChegada();
+  verificaVencedor();
+}
 
-  olhoX = map(mouseX, 0, 400, 130, 170);
-  olhoY = map(mouseY, 0, 400, 130, 170);
+function ativaJogo() {
+  if (focused == true) {
+    background("#D2EBB5");
+  } else {
+    background("rgb(238,178,178)");
+  }
+}
 
-  circle(olhoX, olhoY, 10); // nova pupila esquerda
-  circle(olhoX + 100, olhoY, 10); //nova pupila direita
-  if (mouseIsPressed) {
-    console.log(mouseX, mouseY);
+function desenhaJogadores() {
+  textSize(40);
+  for (let i = 0; i < quantidade; i++) {
+    text(jogador[i], xJogador[i], yJogador[i]);
+  }
+}
+
+function desenhaLinhaDeChegada() {
+  fill("white");
+  rect(350, 0, 10, 400);
+  fill("black");
+  for (let yAtual = 0; yAtual < 400; yAtual += 20) {
+    rect(350, yAtual, 10, 10);
+  }
+}
+
+function verificaVencedor() {
+  for (let i = 0; i < quantidade; i++) {
+    if (xJogador[i] > 350) {
+      text(jogador[i] + " venceu!", 50, 200);
+      noLoop();
+    }
+  }
+}
+
+function keyReleased() {
+  for (let i = 0; i < quantidade; i++) {
+    if (key == teclas[i]) {
+      xJogador[i] += random(20);
+    }
   }
 }
